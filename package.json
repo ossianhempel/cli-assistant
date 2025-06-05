@@ -1,0 +1,29 @@
+{
+  "name": "cli-assistant",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ossianhempel/cli-assistant#readme",
+  "bugs": {
+    "url": "https://github.com/ossianhempel/cli-assistant/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ossianhempel/cli-assistant.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --watch src --exec ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
