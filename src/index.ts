@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { config } from 'dotenv';
 import readline from 'readline';
+import fs from 'fs';
 
 // https://ampcode.com/how-to-build-an-agent
 
@@ -39,11 +40,37 @@ function getUserMessage(): Promise<string | null> {
     });
 }
 
-function readFile(
-    input: string
-) {
-    
+async function readFile(input: string): Promise<string> {
+    try {
+        const content = await fs.promises.readFile(input, 'utf8');
+        if (!content) {
+            throw new Error("File is empty");
+        }
+        return content;
+    } catch (error) {
+        console.error("Error reading file", error);
+        throw new Error("Error reading file");
+    }
 }
+
+const readFileTool: ToolDefinition = {
+    name: "read_file",
+    description: "Read the contents of a file and return it as a string",
+    inputSchema: {
+        type: "object",
+        properties: {
+            filePath: {
+                type: "string",
+                description: "The path to the file to read",
+            }
+        },
+        required: ["filePath"]
+    },
+    function: (input: any) => {
+        const { filePath } = input;
+        return readFile(filePath);
+    }
+};
 
 // agent class that handles interaction with OpenRouter
 class Agent {
@@ -103,7 +130,7 @@ async function main() {
     const agent = new Agent(
         openai, 
         getUserMessage,
-        [],
+        [readFileTool],
     );
     await agent.run();
 }
